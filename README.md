@@ -16,7 +16,7 @@
 
 ### Solution - VBA Code Wall_Street_VBA_Exercise
 
-1. Define the variables as required
+1. Define the variables as required and initialise variables as necessary
 ```
     Dim ticker As String
     Dim LastRow As Long
@@ -31,69 +31,89 @@
     Dim ws As Worksheet
 ```
 
+2. * Populate the headings of the table
+    
+   * Using a For loop, populate the ticker symbol and stock volume for each new ticker symbol
 
-2. Using a For loop, populate the ticker symbol and check for each new ticker symbol and 
+   * Calculate the yearly change by finding the difference between the opening stock and closing stock for each ticker in a year
 
-### Files
+   * Calculate the percent amount by dividing the yearly change with the opening amount 
 
-* [Test Data](Resources/alphabetical_testing.xlsx) - Use this while developing your scripts.
+   ** If the opening stock is 0, populate the Percent change as 0 to avoid stack overflow
 
-* [Stock Data](Resources/Multiple_year_stock_data.xlsx) - Run your scripts on this data to generate the final homework report.
+```
+ ' Adding Headings for the Table
+      ws.Range("I1") = "Ticker"
+      ws.Range("J1") = "Yearly Change"
+      ws.Range("K1") = "Percent Change"
+      ws.Range("L1") = "Total Stock Volume"
+      ws.Columns("I:L").AutoFit
+    
+    For i = 2 To LastRow
+       If ws.Cells(i, 1).Value <> ws.Cells(i + 1, 1).Value Then
+       
+       '  Calculating Total Stock Volume
+          stock_volume = stock_volume + ws.Cells(i, 7)
+          ws.Range("L" & ticker_row).Value = stock_volume
+          
+       '  Populating Ticker
+          ws.Range("I" & ticker_row).Value = ws.Cells(i, 1).Value
+          
+       '  Calculating Yearly Change and Percent Chane
+          opening_amount = ws.Cells(year_change_row, 3).Value
+          closing_amount = ws.Cells(i, 6).Value
+          yearly_change = closing_amount - opening_amount
+          
+       '  For Records where Opening and Closing amounts are zeroes
+           If opening_amount = 0 Then
+            ws.Range("J" & ticker_row).Value = yearly_change
+            ws.Range("K" & ticker_row).Value = 0
+           Else
+            percent_amount = yearly_change / opening_amount
+            ws.Range("J" & ticker_row).Value = yearly_change
+            ws.Range("K" & ticker_row).Value = FormatPercent(percent_amount, 2)
+           End If
+```
 
-### Stock market analyst
+3. Perform conditional formatting on the Yearly change field so that all positive changes are highlighted in Green and Negative    changes are highlighted in Red.
 
-![stock Market](Images/stockmarket.jpg)
+```
+          If yearly_change >= 0 Then
+             ws.Range("J" & ticker_row).Interior.ColorIndex = 4
+          Else
+             ws.Range("J" & ticker_row).Interior.ColorIndex = 3
+          End If
+```	
 
-## Instructions
+4. Loop the code through each worksheet so that it runs for each year in the workbook. This is done in the beginning of the code
 
-* Create a script that will loop through all the stocks for one year and output the following information.
+```
+          For Each ws In Worksheets
+```
 
-  * The ticker symbol.
+### Bonus Question - used the for loop to check for the greatest increase and decrease in the Percent change and also the highest stock volume
 
-  * Yearly change from opening price at the beginning of a given year to the closing price at the end of that year.
+```
+For j = 2 To LastRow
+  
+    If ws.Cells(j, 11).Value >= 0 Then
+         If ws.Cells(j, 11).Value > max_percent Then
+            max_percent = ws.Cells(j, 11).Value
+            ticker_max = ws.Cells(j, 9).Value
+         End If
+    Else
+         If ws.Cells(j, 11).Value < min_percent Then
+            min_percent = ws.Cells(j, 11).Value
+            ticker_min = ws.Cells(j, 9).Value
+         End If
+     End If
+     
+     If ws.Cells(j, 12).Value > max_stock Then
+        max_stock = ws.Cells(j, 12).Value
+        ticker_stock = ws.Cells(j, 9).Value
+     End If
+     
+   Next j
+```
 
-  * The percent change from opening price at the beginning of a given year to the closing price at the end of that year.
 
-  * The total stock volume of the stock.
-
-* You should also have conditional formatting that will highlight positive change in green and negative change in red.
-
-* The result should look as follows.
-
-![moderate_solution](Images/moderate_solution.png)
-
-## BONUS
-
-* Your solution will also be able to return the stock with the "Greatest % increase", "Greatest % decrease" and "Greatest total volume". The solution will look as follows:
-
-![hard_solution](Images/hard_solution.png)
-
-* Make the appropriate adjustments to your VBA script that will allow it to run on every worksheet, i.e., every year, just by running the VBA script once.
-
-## Other Considerations
-
-* Use the sheet `alphabetical_testing.xlsx` while developing your code. This data set is smaller and will allow you to test faster. Your code should run on this file in less than 3-5 minutes.
-
-* Make sure that the script acts the same on each sheet. The joy of VBA is to take the tediousness out of repetitive task and run over and over again with a click of the button.
-
-* Some assignments, like this one, contain a bonus. It is possible to achieve mastery on this assignment without completing the bonus. The bonus adds an opportunity to further develop you skills and be rewarded extra points for doing so.
-
-## Submission
-
-* To submit please upload the following to Github:
-
-  * A screen shot for each year of your results on the Multi Year Stock Data.
-
-  * VBA Scripts as separate files.
-
-* Ensure you commit regularly to your repository and it contains a README.md file.
-
-* After everything has been saved, create a sharable link and submit that to <https://bootcampspot-v2.com/>.
-
-## Rubric
-
-[Unit 2 Rubric - VBA Homework - The VBA of Wall Street](https://docs.google.com/document/d/1OjDM3nyioVQ6nJkqeYlUK7SxQ3WZQvvV3T9MHCbnoWk/edit?usp=sharing)
-
-- - -
-
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
