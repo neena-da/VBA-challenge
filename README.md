@@ -2,7 +2,7 @@
 
 ## Task
 
-* Create a script that will loop through all the stocks for one year and output the following information.
+* To create a script that will loop through all the stocks for one year and output the following information.
 
   * The ticker symbol.
 
@@ -12,9 +12,9 @@
 
   * The total stock volume of the stock.
 
-* You should also have conditional formatting that will highlight positive change in green and negative change in red.
+  * conditional formatting that will highlight positive change in green and negative change in red.
 
-### Solution - VBA Code Wall_Street_VBA_Exercise
+### Solution - VBA Code - Wall_Street_VBA_Exercise
 
 1. Define the variables as required and initialise variables as necessary
 ```
@@ -35,11 +35,11 @@
     
    * Using a For loop, populate the ticker symbol and stock volume for each new ticker symbol
 
-   * Calculate the yearly change by finding the difference between the opening stock and closing stock for each ticker in a year
+   * Calculate the yearly change by calculating the difference between the opening stock and closing stock for each ticker in a year
 
    * Calculate the percent amount by dividing the yearly change with the opening amount 
 
-   ** If the opening stock is 0, populate the Percent change as 0 to avoid stack overflow
+   * If the opening stock is 0, populate the Percent change as 0 to avoid error caused by division by 0.
 
 ```
  ' Adding Headings for the Table
@@ -91,7 +91,7 @@
           For Each ws In Worksheets
 ```
 
-### Bonus Question - used the for loop to check for the greatest increase and decrease in the Percent change and also the highest stock volume
+### Bonus Question - use the for loop to check for the greatest increase and decrease in the Percent change and also the highest stock volume
 
 ```
 For j = 2 To LastRow
