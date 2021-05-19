@@ -2,7 +2,7 @@
 
 ## Task
 
-* To create a script that will loop through all the stocks for one year and output the following information.
+  * To create a script that will loop through all the stocks for one year and output the following information.
 
   * The ticker symbol.
 
@@ -91,7 +91,8 @@
           For Each ws In Worksheets
 ```
 
-### Bonus Question - use the for loop to check for the greatest increase and decrease in the Percent change and also the highest stock volume
+### Bonus Question 
+* use the for loop to check for the greatest increase and decrease in the Percent change and also the highest stock volume
 
 ```
 For j = 2 To LastRow
